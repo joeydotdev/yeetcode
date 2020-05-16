@@ -14,31 +14,34 @@
 #         self.right = right
 class Solution:
     def goodNodes(self, root: TreeNode) -> int:
-        lookup = {}
+        # lookup = {}
 
-        def populate(node: TreeNode, parent: TreeNode):
-            if node is None:
-                return
+        # def populate(node: TreeNode, parent: TreeNode):
+        #     if node is None:
+        #         return
 
-            if parent is not None:
-                max_val_to_this_point = max(node.val, lookup[parent])
-            else:
-                max_val_to_this_point = node.val
+        #     if parent is not None:
+        #         max_val_to_this_point = max(node.val, lookup[parent])
+        #     else:
+        #         max_val_to_this_point = node.val
             
-            lookup[node] = max_val_to_this_point
-            populate(node.left, node)
-            populate(node.right, node)
+        #     lookup[node] = max_val_to_this_point
+        #     populate(node.left, node)
+        #     populate(node.right, node)
 
-        def count(node: TreeNode):
+        def count(node: TreeNode, max_val: int):
             num = 0
             if node is None:
                 return num
-            if node.val >= lookup[node]:
+            if node.val >= max_val:
                 num += 1
-            
-            num += count(node.left) + count(node.right)
+
+            max_val_to_this_point = max(node.val, max_val)
+            num += count(node.left, max_val_to_this_point) + count(node.right, max_val_to_this_point)
             return num
 
+        if root is None:
+            return 0
 
-        populate(root, None)
-        return count(root)
+        # populate(root, None)
+        return count(root, root.val)
