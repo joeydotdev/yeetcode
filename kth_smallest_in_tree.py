@@ -8,9 +8,12 @@ class Solution:
     def kthSmallest(self, root: TreeNode, k: int) -> int:
         l = []
         def dfs(node: TreeNode):
+            if len(l) >= k:
+                return
             if node is None:
                 return
             dfs(node.left)
             l.append(node.val)
             dfs(node.right)
+        dfs(root)
         return l[k-1]
